@@ -61,3 +61,7 @@ path = "udp-codec.rs"
 [[example]]
 name = "tinyhttp"
 path = "tinyhttp.rs"
+
+[[example]]
+name = "my-echo-tcp"
+path = "my-echo-tcp.rs"
