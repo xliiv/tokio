@@ -1,14 +1,14 @@
-use tokio::stream::Stream;
-use std::pin::Pin;
-use std::task::{Context, Poll};
 use futures::sink::SinkExt;
 use futures::stream::StreamExt;
 use std::collections::HashMap;
 use std::error::Error;
 use std::net::SocketAddr;
+use std::pin::Pin;
 use std::sync::Arc;
+use std::task::{Context, Poll};
 use tokio;
 use tokio::net::TcpStream;
+use tokio::stream::Stream;
 use tokio::sync::mpsc;
 use tokio::sync::Mutex;
 use tokio_util::codec;
@@ -60,8 +60,14 @@ struct Peer {
     chat_msges: mpsc::UnboundedReceiver<String>,
 }
 impl Peer {
-    pub fn new(user_lines: codec::Framed<TcpStream, codec::LinesCodec>, chat_msges: mpsc::UnboundedReceiver<String>) -> Self {
-        Self { user_lines, chat_msges }
+    pub fn new(
+        user_lines: codec::Framed<TcpStream, codec::LinesCodec>,
+        chat_msges: mpsc::UnboundedReceiver<String>,
+    ) -> Self {
+        Self {
+            user_lines,
+            chat_msges,
+        }
     }
 }
 impl Stream for Peer {
@@ -78,7 +84,7 @@ impl Stream for Peer {
             Some(Ok(msg)) => Some(Ok(Message::FromUser(msg))),
             Some(Err(e)) => Some(Err(e)),
             // The stream has been exhausted.
-            None =>  None,
+            None => None,
         })
     }
 }
@@ -121,7 +127,6 @@ async fn handle_client(
         }
     }
 
-
     //// client connected => insert it to Peers and tell others
     //let (peer_tx, mut peer_rx) = mpsc::unbounded_channel();
     //{
@@ -155,9 +160,6 @@ async fn handle_client(
     //        }
     //    }
     //}
-
-
-
 
     {
         // client disconnected => remove it from Peers and tell others

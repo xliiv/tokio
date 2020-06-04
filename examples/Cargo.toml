@@ -67,6 +67,10 @@ name = "my-echo-tcp"
 path = "my-echo-tcp.rs"
 
 [[example]]
+name = "my-echo-udp"
+path = "my-echo-udp.rs"
+
+[[example]]
 name = "my-connect-tcp"
 path = "my-connect-tcp.rs"
 
