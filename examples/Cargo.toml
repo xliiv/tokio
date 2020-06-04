@@ -69,3 +69,7 @@ path = "my-echo-tcp.rs"
 [[example]]
 name = "my-connect-tcp"
 path = "my-connect-tcp.rs"
+
+[[example]]
+name = "my-chat"
+path = "my-chat.rs"

@@ -32,7 +32,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
     future::try_join(
         client_sink.send_all(&mut std_stream),
         std_sink.send_all(&mut client_stream),
-    ).await.expect("can't join sockets");
+    )
+    .await
+    .expect("can't join sockets");
 
     Ok(())
 }
