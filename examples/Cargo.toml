@@ -75,5 +75,9 @@ name = "my-connect-tcp"
 path = "my-connect-tcp.rs"
 
 [[example]]
+name = "my-connect-udp"
+path = "my-connect-udp.rs"
+
+[[example]]
 name = "my-chat"
 path = "my-chat.rs"
