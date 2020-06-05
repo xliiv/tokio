@@ -12,7 +12,8 @@ impl Server {
             // read message from client
             let (read_num, target) = self.socket.recv_from(&mut self.buffer).await?;
             let received = &self.buffer[0..read_num];
-            dbg!(from_utf8(received).expect("Can't decode received data"));
+            let decoded = from_utf8(received).expect("Can't decode received data");
+            dbg!(decoded);
             // echo back the message to client
             self.socket.send_to(received, target).await?;
         }
