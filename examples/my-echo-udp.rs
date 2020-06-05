@@ -12,7 +12,7 @@ impl Server {
             // read message from client
             let (read_num, target) = self.socket.recv_from(&mut self.buffer).await?;
             let received = &self.buffer[0..read_num];
-            dbg!(from_utf8(received));
+            dbg!(from_utf8(received).expect("Can't decode received data"));
             // echo back the message to client
             self.socket.send_to(received, target).await?;
         }
@@ -22,10 +22,9 @@ impl Server {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     let addr = "127.0.0.1:8080";
-    let mut socket = UdpSocket::bind(&addr).await?;
+    let socket = UdpSocket::bind(&addr).await?;
     println!("Listening on {}", &addr);
 
-    let mut buffer = [0_u8; 1024];
     Server {
         socket,
         buffer: vec![0; 1024],
