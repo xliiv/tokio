@@ -1,12 +1,11 @@
 use std::error::Error;
 use tokio;
-use tokio::net::UdpSocket;
-use tokio_util::codec;
 use tokio::io;
-use tokio::stream::StreamExt;
 use tokio::io::{Stdin, Stdout};
 use tokio::net::udp::{RecvHalf, SendHalf};
-
+use tokio::net::UdpSocket;
+use tokio::stream::StreamExt;
+use tokio_util::codec;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -21,7 +20,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let std_out = codec::FramedWrite::new(io::stdout(), codec::BytesCodec::new());
 
     tokio::try_join!(
-        socket_to_stdout(socket_out, std_out), stdin_to_socket(std_in, socket_in),
+        socket_to_stdout(socket_out, std_out),
+        stdin_to_socket(std_in, socket_in),
     )?;
 
     Ok(())
@@ -30,7 +30,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 async fn socket_to_stdout(
     mut socket_reader: RecvHalf,
     mut std_out: codec::FramedWrite<Stdout, codec::BytesCodec>,
-) -> Result<(), Box<dyn Error>>{
+) -> Result<(), Box<dyn Error>> {
     loop {
         let mut buffer = vec![0; 1024];
         let bytes_count = socket_reader.recv(&mut buffer).await?;
@@ -40,13 +40,12 @@ async fn socket_to_stdout(
             std_out.send(Bytes::from(buffer)).await?;
         }
     }
-
 }
 
 async fn stdin_to_socket(
     mut stdin: codec::FramedRead<Stdin, codec::BytesCodec>,
     mut socket_in: SendHalf,
-) -> Result<(), Box<dyn Error>>{
+) -> Result<(), Box<dyn Error>> {
     while let Some(item) = stdin.next().await {
         let buffer = item?;
         socket_in.send(&buffer).await?;

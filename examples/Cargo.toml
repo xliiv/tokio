@@ -81,3 +81,7 @@ path = "my-connect-udp.rs"
 [[example]]
 name = "my-chat"
 path = "my-chat.rs"
+
+[[example]]
+name = "tinydb-re"
+path = "tinydb-re.rs"
